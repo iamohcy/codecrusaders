@@ -1,0 +1,194 @@
+
+{% load staticfiles %}
+{% for grumb in grumbs %}
+<li class="list-group-item grumb grumb_{{grumb.id}}" id="grumb_{{grumb.id}}">
+    <div class="row">
+        <!-- Profile image -->
+        <div class="col-md-2 col-sm-3 col-xs-4">
+            {% if grumb.user.profile.profile_pic %}
+                <img src= {% static grumb.user.profile.profile_pic.url %} alt="NOT LOADED" class="img-rounded profile-pic-grumb">
+            {% else %}
+                <img src= {% static "images/empty_profile_sq5.jpg" %} alt="NOT LOADED" class="img-rounded profile-pic-grumb">
+            {% endif %}
+        </div>
+        <!-- Grumb contents -->
+        <div class="col-md-10 col-sm-9 col-xs-8">
+            <div class="grumb-author mp-semibold">
+                <a href={% url "profile" grumb.user.username %}>{{grumb.user.first_name}}</a>
+                <span class="grumb-username mp">@{{grumb.user.username}}</span>
+                <span class="grumb-date mp">{{grumb.datetime_str}}</span>
+            </div>
+            <!-- TEXT -->
+            <div class="grumb-text mp">{{grumb.text}}</div>
+            {% if grumb.image %}
+                <div class="grumb-image-container">
+                    <img src= {% static grumb.image.url %} alt="NOT LOADED" class="img-rounded grumb-image">
+                </div>
+            {% endif %}
+            <!-- REGRUMB -->
+            {% if grumb.regrumb %}
+            <div class="retweeted">
+                <span class="glyphicon glyphicon-retweet">&nbsp;</span>Retweeted by <a href="#">Darth Vader</a>
+            </div>
+            {% endif %}
+            <!-- Comment/like buttons -->
+            <div class="grumb-buttons">
+                <div class="grumb-button">
+                    <span class="glyphicon glyphicon-retweet"></span>
+                    <a href="">Regrumb</a>
+                </div>
+                <div class="grumb-button">
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                    {% if current_user in grumb.dislikes.all %}
+                    <form style="display:inline;" class="dislike-form-grumb" action={% url "undislike_grumb" %} method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                        <input type="hidden" name="source_id" value={{grumb.id}}></input>
+                            <input class="dislike-link" type="submit" value="Undislike"></input>
+                    </form>
+                    {% else %}
+                    <form style="display:inline;" class="dislike-form-grumb" action={% url "dislike_grumb" %} method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                        <input type="hidden" name="source_id" value={{grumb.id}}></input>
+                            <input class="dislike-link" type="submit" value="Dislike"></input>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="grumb-button">
+                    <span class="glyphicon glyphicon-comment"></span>
+                    <a data-toggle="collapse" class="expand-link" data-target="#expand_{{grumb.id}}">Comment</a>
+                </div>
+            </div>
+
+            <div class="expand-grumb-button">
+                 <a data-toggle="collapse" class="expand-link" data-target="#expand_{{grumb.id}}">Expand</a>
+            </div>
+
+<!-- *************************** GRUMBS EXPANDED *************************** -->
+
+            <!-- We need this empty div to clear the floats above. -->
+            <div class="clear"></div>
+            <div id="expand_{{grumb.id}}" class="grumb-expanded collapse out">
+                <div class="grumb-comments">
+                    <ul class="list-group comments-list">
+                        <!-- GRUMB STATS -->
+                        <li class="list-group-item grumb-stats">
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                            <span class="num_dislikes">
+                                {% spaceless %}
+                                {% if grumb.dislikes.all|length == 0 %}
+                                    <span>&nbsp;Nobody dislikes this</span>
+                                {% elif grumb.dislikes.all|length == 1 %}
+                                    <span>&nbsp;</span>
+                                    <a href={% url "profile" grumb.dislikes.all.0.username %}>{{grumb.dislikes.all.0.first_name}}</a>
+                                    <span> dislikes this</span>
+                                {% elif grumb.dislikes.all|length == 2 %}
+                                    <span>&nbsp;</span>
+                                    <a href={% url "profile" grumb.dislikes.all.0.username %}>{{grumb.dislikes.all.0.first_name}}</a>
+                                    <span> and </span>
+                                    <a href={% url "profile" grumb.dislikes.all.1.username %}>{{grumb.dislikes.all.1.first_name}}</a>
+                                    <span> dislike this</span>
+                                {% elif grumb.dislikes.all|length == 3 %}
+                                    <span>&nbsp;</span>
+                                    <a href={% url "profile" grumb.dislikes.all.0.username %}>{{grumb.dislikes.all.0.first_name}}</a>
+                                    <span>, </span>
+                                    <a href={% url "profile" grumb.dislikes.all.1.username %}>{{grumb.dislikes.all.1.first_name}}</a>
+                                    <span> and </span>
+                                    <a href={% url "profile" grumb.dislikes.all.2.username %}>{{grumb.dislikes.all.2.first_name}}</a>
+                                    <span> dislike this</span>
+                                {% elif grumb.dislikes.all|length == 4 %}
+                                    <span>&nbsp;</span>
+                                    <a href={% url "profile" grumb.dislikes.all.0.username %}>{{grumb.dislikes.all.0.first_name}}</a>
+                                    <span>, </span>
+                                    <a href={% url "profile" grumb.dislikes.all.1.username %}>{{grumb.dislikes.all.1.first_name}}</a>
+                                    <span>, </span>
+                                    <a href={% url "profile" grumb.dislikes.all.2.username %}>{{grumb.dislikes.all.2.first_name}}</a>
+                                    <span> and </span>
+                                    <a href="#" class="dislikes-others" data-toggle="popover" data-content=
+                                        "{% for disliking_user in grumb.dislikes.all|slice:'3:' %}
+                                            <a href={% url 'profile' disliking_user.username %}>{{disliking_user.first_name}}</a><br>
+                                        {% endfor %}"
+                                    >1 other</a>
+                                    <span> dislike this</span>
+                                {% elif grumb.dislikes.all|length > 4 %}
+                                    <span>&nbsp;</span>
+                                    <a href={% url "profile" grumb.dislikes.all.0.username %}>{{grumb.dislikes.all.0.first_name}}</a>
+                                    <span>, </span>
+                                    <a href={% url "profile" grumb.dislikes.all.1.username %}>{{grumb.dislikes.all.1.first_name}}</a>
+                                    <span>, </span>
+                                    <a href={% url "profile" grumb.dislikes.all.2.username %}>{{grumb.dislikes.all.2.first_name}}</a>
+                                    <span> and </span>
+                                    <a href="#" class="dislikes-others" data-toggle="popover" data-content=
+                                        "{% for disliking_user in grumb.dislikes.all|slice:'3:' %}
+                                            <a href={% url 'profile' disliking_user.username %}>{{disliking_user.first_name}}</a><br>
+                                        {% endfor %}"
+                                    >{{ grumb.dislikes.all|length|add:"-3" }} others</a>
+                                    <span> dislike this</span>
+                                {% endif %}
+                                {% endspaceless %}
+                            </span>
+                        </li>
+
+                        <!-- COMMENTS -->
+                        {% for comment in grumb.comment_set.all %}
+                        <li class="list-group-item comment comment_{{comment.id}}" id="comment_{{comment.id}}">
+                            <div class="row">
+                                <!-- Profile image -->
+                                <div class="col-md-1 col-sm-1 col-xs-1 comment-pic-div">
+                                    {% if comment.user.profile.profile_pic %}
+                                        <img src= {% static comment.user.profile.profile_pic.url %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+                                    {% else %}
+                                        <img src= {% static "images/empty_profile_sq5.jpg" %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+                                    {% endif %}
+                                </div>
+                                <!-- Grumb contents -->
+                                <div class="col-md-11 col-sm-11 col-xs-11 comment-text-div">
+                                    <span class="comment-author mp-semibold">
+                                        <a href={% url "profile" comment.user.username %}>{{comment.user.first_name}}</a>
+                                    </span>
+                                    <!-- TEXT -->
+                                    <span class="comment-text mp">{{comment.text}}</span>
+                                    <!-- Comment/like buttons -->
+                                    <div class="comment-buttons">
+                                        <div class="comment-button">
+                                            <span class="comment-date mp">{{comment.datetime_str}}&nbsp;&nbsp;</span>
+                                            {% if current_user in comment.dislikes.all %}
+                                                <form style="display:inline;" class="dislike-form-comment" action={% url "undislike_comment" %} method="post" accept-charset="UTF-8">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                                                    <input type="hidden" name="source_id" value={{comment.id}}></input>
+                                                    <input class="dislike-link" type="submit" value="Undislike"></input>
+                                                </form>
+                                            {% else %}
+                                                <form style="display:inline;" class="dislike-form-comment" action={% url "dislike_comment" %} method="post" accept-charset="UTF-8">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                                                    <input type="hidden" name="source_id" value={{comment.id}}></input>
+                                                    <input class="dislike-link" type="submit" value="Dislike"></input>
+                                                </form>
+                                            {% endif %}
+                                            <span>&nbsp;</span>
+                                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                                            <span class="num_dislikes">{{comment.dislikes.all|length}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                        <!-- GRUMB COMMENT FIELD -->
+                        <li class="list-group-item comment-form">
+                            <form action={% url "post_comment" %} class="post-comment" method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                                <input type="hidden" name="grumb_id" value={{grumb.id}}></input>
+                                <input type="hidden" name="image_url"></input>
+                                <input type="text" autocomplete="off" name="text" class="form-control" placeholder="Write your comment..."></input>
+                            </form>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+<!-- *************************** END GRUMBS EXPANDED *********************** -->
+        </div>
+    </div>
+</li>
+{% endfor %}

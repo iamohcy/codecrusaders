@@ -1,0 +1,424 @@
+.profile-container {
+    padding-top: 35px;
+}
+
+/******************************************************************************/
+/* PROFILE PIC */
+/******************************************************************************/
+
+.profile-pic {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+}
+#profile_name {
+    text-align: center;
+    margin: 20px auto;
+}
+
+
+/******************************************************************************/
+/* MODAL */
+/******************************************************************************/
+
+.modal-dialog {
+    padding: 0px;
+    margin: 0px auto;
+}
+
+.modal-header {
+    background-color: #428bca;
+    color: white;
+}
+.modal-title {
+    font-size: 24px;
+}
+.modal-header button {
+    color: white;
+    width: 25px;
+    height: 25px;
+    opacity: 1;
+}
+.modal-footer {
+    margin: 0px;
+    padding: 10px 20px;
+    color: #aaa;
+}
+.modal-footer a {
+    margin-left: 10px;
+}
+
+/* NEW GRUMB */
+
+#new_grumb_modal_window {
+    height: 276px;
+}
+
+#image-upload-button {
+    position: relative;
+    height: 34px;
+    font-size: 24px;
+    padding: 0px 12px;
+    padding-bottom: 4px;
+}
+
+#add-grumb {
+    margin-left: 5px;
+}
+
+.image-upload-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+}
+
+#change_password_modal_window {
+    height: 294px;
+}
+
+/******************************************************************************/
+/* NAVBAR */
+/******************************************************************************/
+
+#profile-navbar {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.rel-btn {
+    float: right;
+    font-family: myriad-pro;
+    margin: 5px;
+    margin-right: 0px;
+    padding: 4px 0px;
+    width: 64px;
+}
+
+/******************************************************************************/
+/* GRUMBS */
+/******************************************************************************/
+
+#grumbs-list {
+    margin-top: 20px;
+}
+.grumb:hover {
+    background-color: #eee;
+}
+.profile-pic-grumb {
+    width: 100%;
+    max-width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grumb-author {
+
+    font-size: 20px;
+    color: black;
+}
+.grumb-author a {
+    color: black;
+}
+.grumb-author a:hover {
+    color: #428bca;
+}
+.grumb-text {
+    font-size: 20px;
+}
+.grumb-image-container {
+    text-align: center;
+    margin: 10px 0px;
+}
+.grumb-image {
+    max-height: 420px;
+    max-width: 80%;
+}
+.grumb-date {
+    float: right;
+    font-size: 17px;
+    color: #aaa;
+}
+.grumb-username {
+    font-size: 17px;
+    color: #aaa;
+    margin-left: 7px;
+}
+.retweeted,
+.retweeted a {
+    font-size: 17px;
+    color: #aaa;
+}
+.retweeted a:hover {
+    color: #428bca;
+}
+
+.grumb-buttons {
+    color: #428bca;
+}
+
+.grumb-button {
+    visibility: hidden;
+    margin: 5px 5px;
+    float: right;
+}
+
+.expand-grumb-button {
+    margin: 5px 5px;
+    float: left;
+}
+
+.dislike-link {
+    background: transparent;
+    cursor: pointer;
+    border: 0px;
+    color: #428bca;
+    padding: 0px;
+}
+
+.dislike-link:hover {
+    color: #2a6496;
+    text-decoration: underline;
+}
+.expand-link {
+    cursor: pointer;
+}
+/******************************************************************************/
+/* COMMENTS */
+/******************************************************************************/
+
+.grumb-expanded {
+}
+
+.grumb-expanded .glyphicon {
+    color: #428bca;
+}
+
+#comments-list {
+    margin: 0px;
+}
+
+.comment:hover {
+    background-color: #eee;
+}
+
+.profile-pic-comment {
+    width: 100%;
+    max-width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.comment-pic-div {
+    padding-left: 10px;
+    padding-right: 0px;
+}
+.comment-text-div {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.comment-author {
+    font-size: 14px;
+    color: black;
+}
+.comment-author a {
+    color: black;
+}
+.comment-author a:hover {
+    color: #428bca;
+}
+.comment-text {
+    font-size: 14px;
+}
+.comment-date {
+    float: right;
+    font-size: 12px;
+    color: #aaa;
+}
+.comment-username {
+    font-size: 12px;
+    color: #aaa;
+    margin-left: 7px;
+}
+
+
+/******************************************************************************/
+/* FOLLOWERS */
+/******************************************************************************/
+
+#followers-grumbs-list {
+    margin-top: 20px;
+}
+
+
+/******************************************************************************/
+/* PROFILE */
+/******************************************************************************/
+
+#profile_pic_container,
+#profile_pic_btn_container {
+    height: 300px;
+    width: 300px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+#profile_pic_btn_container {
+    opacity:0;
+}
+#profile_pic_btn_container:hover {
+    opacity:1.0;
+}
+#profile_pic {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#edit_profile_pic {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+.profile-title {
+    font-size: 20px;
+    color: #125b9a;
+}
+.profile-content {
+    font-size: 16px;
+}
+.profile-content a {
+    color: #428bca;
+}
+.profile-content a:hover {
+    color: #125b9a;
+}
+.profile-content-param {
+    color: #428bca;
+}
+#contacts-table {
+    margin-bottom: 0px;
+}
+#followers-panel {
+    padding: 0px 15px;
+}
+#following-panel {
+    padding: 0px 15px;
+}
+#followers-list {
+    margin-top: 20px;
+}
+#following-list {
+    margin-top: 20px;
+}
+.follower:hover {
+    background-color: #eee;
+}
+.profile-pic-follower {
+    width: 100%;
+    max-width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.follower-author {
+    font-size: 20px;
+    color: black;
+}
+.follower-author a {
+    color: black;
+}
+.follower-author a:hover {
+    color: #428bca;
+}
+.follower-text {
+    font-size: 20px;
+}
+.follower-username {
+    font-size: 17px;
+    color: #aaa;
+    margin-left: 7px;
+}
+
+/******************************************************************************/
+/* EDITING PROFILE */
+/******************************************************************************/
+
+.edit-profile-btn {
+    float: right;
+    font-size: 14px;
+    color: #aaa;
+    border-color: #aaa;
+    border-width: 1px;
+    background-color: #fff;
+    padding: 4px;
+    margin: 0px 0px;
+}
+.edit-profile-btn:hover,
+.edit-profile-btn:focus,
+.edit-profile-btn:active {
+    color: white;
+    background-color: #ccc;
+    border-color: #888;
+}
+.profile-modal {
+    height: 276px;
+}
+#edit-contacts-table,
+#edit-profile-modal-body {
+    margin: 0px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+#edit_contacts_modal_window {
+    height: 347px;
+}
+#id_phone, #id_email, #id_address, #id_website, #id_facebook {
+    width: 100%;
+}
+#edit_profile_pic_modal_window {
+    height: 184px;
+    width: 350px;
+}
+
+.pw_change_input {
+    margin-bottom: 15px;
+}
+
+/******************************************************************************/
+/* IMAGES */
+/******************************************************************************/
+
+.thumbnail {
+    margin-bottom: 20px;
+}
+
+
+/******************************************************************************/
+/* SEARCH */
+/******************************************************************************/
+
+#search-form {
+    height: 67px;
+    margin: 15px;
+    padding: 15px;
+}
+#search-text {
+    font-size: 14px;
+}
+
+#search-btn {
+    font-size: 14px;
+}

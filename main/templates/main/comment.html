@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<li class="list-group-item comment comment_{{comment.id}}" id="comment_{{comment.id}}">
+    <div class="row">
+        <!-- Profile image -->
+        <div class="col-md-1 col-sm-1 col-xs-1 comment-pic-div">
+            {% if comment.user.profile.profile_pic %}
+                <img src= {% static comment.user.profile.profile_pic.url %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+            {% else %}
+                <img src= {% static "images/empty_profile_sq5.jpg" %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+            {% endif %}
+        </div>
+        <!-- Grumb contents -->
+        <div class="col-md-11 col-sm-11 col-xs-11 comment-text-div">
+            <span class="comment-author mp-semibold">
+                <a href={% url "profile" comment.user.username %}>{{comment.user.first_name}}</a>
+            </span>
+            <!-- TEXT -->
+            <span class="comment-text mp">{{comment.text}}</span>
+            <!-- Comment/like buttons -->
+            <div class="comment-buttons">
+                <div class="comment-button">
+                    <span class="comment-date mp">{{comment.datetime_str}}&nbsp;&nbsp;</span>
+                    {% if current_user in comment.dislikes.all %}
+                        <form style="display:inline;" class="dislike-form-comment" action={% url "undislike_comment" %} method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                            <input type="hidden" name="source_id" value={{comment.id}}></input>
+                            <input class="dislike-link" type="submit" value="Undislike"></input>
+                        </form>
+                    {% else %}
+                        <form style="display:inline;" class="dislike-form-comment" action={% url "dislike_comment" %} method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="csrfmiddlewaretoken" value={{csrf_token_value}}>
+                            <input type="hidden" name="source_id" value={{comment.id}}></input>
+                            <input class="dislike-link" type="submit" value="Dislike"></input>
+                        </form>
+                    {% endif %}
+                    <span>&nbsp;</span>
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                    <span class="num_dislikes">{{comment.dislikes.all|length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

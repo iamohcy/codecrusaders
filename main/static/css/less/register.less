@@ -1,0 +1,212 @@
+@color: red;
+@padding-top-a: 7px;
+@padding-top-b: 60px;
+
+@font-face {
+    font-family: beyond_sky_font;
+    src: local(beyond_sky_font), url('fonts/beyondsky.ttf') format('opentype');
+}
+
+body {
+    background-color: @color;
+    /*background-image: url('bg/cat3.jpg');*/
+    background-size: cover;
+    background-position: 0px @padding-top-b;
+}
+
+#logo-text {
+    font-family: beyond_sky_font;
+    font-size: 400%;
+    text-shadow: none;
+}
+
+#message {
+    background: none;
+    border-style: none;
+}
+
+.text-white {
+    color: white;
+    text-shadow: 0.1em 0.1em 0.2em black
+}
+
+.vert-align {
+    display: table;
+}
+
+.vert-align-child {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.signup {
+    /* IE10 Consumer Preview */
+    background-image: -ms-linear-gradient(top, #F2F8FF 0%, #A3D4FF 100%);
+    /* Mozilla Firefox */
+    background-image: -moz-linear-gradient(top, #F2F8FF 0%, #A3D4FF 100%);
+    /* Opera */
+    background-image: -o-linear-gradient(top, #F2F8FF 0%, #A3D4FF 100%);
+    /* Webkit (Safari/Chrome 10) */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F2F8FF), color-stop(1, #A3D4FF));
+    /* Webkit (Chrome 11+) */
+    background-image: -webkit-linear-gradient(top, #F2F8FF 0%, #A3D4FF 100%);
+    /* W3C Markup, IE10 Release Preview */
+    background-image: linear-gradient(to bottom, #F2F8FF 0%, #A3D4FF 100%);
+}
+
+.password {
+    padding-right: 0px;
+}
+
+.signin-button-div {
+    padding-left: @padding-top-a;
+}
+
+.signin-button {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.password-row {
+    padding-top: @padding-top-a;
+}
+
+.label-remember {
+    line-height: 1.6;
+}
+
+.signup-row {
+    padding-top: @padding-top-b;
+}
+
+.no-top-padding {
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+.no-bottom-padding {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+
+.register-input {
+    margin-top: 7px;
+}
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow: hidden;
+    overflow-y: auto;
+    min-width: 0px;
+}
+
+#month-dropdown {
+    width: 100%;
+}
+
+#day-dropdown {
+    width: 100%;
+}
+
+#year-dropdown {
+    width: 100%;
+}
+
+.dropdown-menu li {
+    text-align: center;
+}
+
+.dropdown-menu li a {
+    text-align: center;
+    padding: 0px;
+}
+
+.dropdown-toggle {
+    width: 100%;
+}
+
+#day-button {
+    padding: 0px 5px;
+}
+
+.caret {
+    float: right;
+    margin: 8px 0px;
+}
+
+h4 {
+    color: #757575;
+}
+
+/* ************************************************************************ */
+/* ************************************************************************ */
+/* START OF NOT ORIGINAL CODE */
+/* Scrollable menus in bootstrap from: http://www.eichefam.net/?p=4395 */
+
+a.dropdown-toggle {
+    position: relative;
+    width: 100%;
+}
+
+a.dropdown-toggle::before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #CCC;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: -2px;
+    right: 7px;
+    display: none;
+}
+a.dropdown-toggle::after {
+    content: '';
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    position: absolute;
+    bottom: -2px;
+    right: 8px;
+    z-index: 1001;
+    display: none;
+}
+
+.open > a.dropdown-toggle::before,
+.open > a.dropdown-toggle::after {
+    display: block;
+}
+
+/* Pretty scrollbars! from: http://css-tricks.com/examples/WebKitScrollbars/ */
+/* For the "inset" look only */
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #428bca;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #529bda;
+}
+
+/* END OF NOT ORIGINAL CODE */
+/* ************************************************************************ */
+/* ************************************************************************ */

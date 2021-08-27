@@ -1,0 +1,103 @@
+body {
+    background: url('bg/index-bg4.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.signin-row {
+}
+
+.signin-col {
+    margin-left: 25%;
+}
+
+.signin-label {
+    text-shadow:0 -1px 0 #666;
+    -webkit-font-smoothing: antialiased;
+    font-size: 23px;
+    margin-bottom: 0px;
+    padding-top: 3px;
+}
+
+.password-div {
+    padding-right: 5px;
+}
+
+.signin-button-div {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 0px;
+}
+
+.signin-btn {
+    background-color: #333;
+    border-color: #333;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+
+.signin-btn:hover {
+    background-color: #3a3a3a;
+    border-color: #3a3a3a;
+}
+
+.input-col {
+    /*margin-top: 3px;*/
+}
+
+#username {
+}
+
+.form-control {
+    display: inline;
+    margin-bottom: 15px;
+    /*margin-left: 5px;*/
+
+}
+
+.form-control:focus {
+    border-color: #888;
+}
+
+a {
+    color: #aaa;
+}
+
+a:hover {
+    color: #ccc;
+}
+
+.extra-links {
+    float: right;
+    margin-right: 30px;
+    margin-top: 0px;
+}
+
+h6 {
+    color: #aaa;
+}
+
+#parent-div {
+    position: relative;
+}
+
+.child-div {
+    position: absolute;
+    width: 100%;
+
+    -webkit-animation-duration: 0.7s;
+    -moz-animation-duration: 0.7s;
+    -ms-animation-duration: 0.7s;
+    -o-animation-duration: 0.7s;
+}
+
+.pad_right_6 {
+    padding-right: 7px;
+}
+
+.pad_left_6 {
+    padding-left: 7px;
+}

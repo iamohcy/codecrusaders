@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{user.first_name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    {% load staticfiles %}
+    <link href= {% static "css/bootstrap.min.css" %} rel="stylesheet" media="screen">
+    <link href= {% static "css/grumblr.css" %} rel="stylesheet" media="screen">
+    <link href= {% static "css/profile.css" %} rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/html5shiv.js"></script>
+    <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+    <link rel='shortcut icon' type='image/x-icon' href= {% static "images/favicon.ico" %} />
+    <link rel="icon" type="image/ico" href= {% static "images/favicon.ico" %}>
+</head>
+
+<body class="mp">
+    <div>
+        <nav class="navbar navbar-default navbar-fixed-top header-nav" role="navigation">
+            <div class="navbar-inner">
+                <div class="container-fluid" id="navbar-container" style="text-align: center; height: 100%;">
+
+                    <!-- Does not do anything, purely for the purpose of centering logo. -->
+                    <button type="button" class="invisible btn btn-primary glyphicon glyphicon-cog nav-btn float-left"></button>
+                    <button type="button" class="invisible btn btn-primary glyphicon glyphicon-cog nav-btn float-left"></button>
+                    <button type="button" class="invisible btn btn-primary glyphicon glyphicon-cog nav-btn float-left"></button>
+
+                    <a class="brand" href="#" style="margin:0 auto; float: none;">
+                        <img src= {% static "images/logo_small.png" %} alt="NOT LOADED" class="img-rounded" id="logo">
+                    </a>
+
+                        <!-- NEW GRUMB -->
+                        <button type="button" class="btn btn-primary glyphicon glyphicon-pencil nav-btn float-right modal-btn" id="new_grumb" data-toggle="modal" href="#new_grumb_modal"></button>
+                        <!-- SETTINGS -->
+                        <div class="dropdown nav-btn setting-btn-div float-right" id="settings-dropdown">
+                            <button data-toggle="dropdown" href="#" type="button" class="btn btn-primary glyphicon glyphicon-cog nav-btn modal-btn setting-btn"></button>
+                            <div id="settings-menu-arrow" style="display:none;"></div>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href={% url "logout_grumblr" %}>Logout</a></li>
+                                <li role="presentation"><a id="change_password" class="modal-link" role="menuitem" tabindex="-1" data-toggle="modal" href="#change_password_modal">Change Password</a></li>
+                            </ul>
+                        </div>
+                        <!-- HOME -->
+                        <a href={% url "self_profile" %} type="button" class="btn btn-primary glyphicon glyphicon-home nav-btn modal-btn float-right"></a>
+
+            </div>
+        </nav>
+    </div>
+
+    <div class="container profile-container">
+
+        <div class="row profile-row">
+
+            <div class="col-md-4">
+                <div id="profile_pic_container">
+                    {% if user.profile.profile_pic %}
+                        <img src= {% static user.profile.profile_pic.url %} alt="NOT LOADED" class="img-rounded profile-pic" id="profile_pic">
+                    {% else %}
+                        <img src= {% static "images/empty_profile_sq5.jpg" %} alt="NOT LOADED" class="img-rounded profile-pic" id="profile_pic">
+                    {% endif %}
+
+                    {% if self_profile %}
+                    <div id="profile_pic_btn_container">
+                        <button type="button" class="btn btn-primary glyphicon glyphicon-edit edit-profile-btn modal-btn"
+                                id="edit_profile_pic" data-toggle="modal" href="#edit_profile_pic_modal"></button>
+                    </div>
+                    {% endif %}
+                </div>
+                <h1 id="profile_name" class="mp-semibold">{{ user.first_name }}</h1>
+            </div>
+
+            <div class="col-md-8" id="main-col">
+
+
+<!-- *********************************************************************** -->
+<!-- ************************** PROFILE NAV BAR **************************** -->
+<!-- *********************************************************************** -->
+
+                <ul class="nav nav-tabs mp-semibold" id="profile-navbar">
+                    <li name="grumbs" class="{{grumbs_hidden.active}}"><a href="#">Grumbs</a></li>
+                    {% if self_profile %}
+                        <li name="followers" class="{{followers_hidden.active}}"><a href="#">Following</a></li>
+                    {% endif %}
+                    <li name="profile" class="{{profile_hidden.active}}"><a href="#">Profile</a></li>
+                    <li name="images" class="{{images_hidden.active}}"><a href="#">Images</a></li>
+                    {% if self_profile %}
+                        <li name="search" class="{{search_hidden.active}}"><a href="#">Search</a></li>
+                    {% endif %}
+                    {% if other_profile %}
+                    <div class="profile-buttons">
+                        <!-- BLOCK/UNBLOCK BUTTON -->
+                        {% if blocked %}
+                        <form action={% url "unblock" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                            <input type="hidden" name="user_id" value={{user.id}}></input>
+                            <button type="submit" class="btn btn-primary rel-btn" id="block-btn">Unblock</button>
+                        </form>
+                        {% else %}
+                        <form action={% url "block" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                            <input type="hidden" name="user_id" value={{user.id}}></input>
+                            <button type="submit" class="btn btn-primary rel-btn" id="block-btn">Block</button>
+                        </form>
+                        {% endif %}
+                        <!-- FOLLOW/UNFOLLOW BUTTON -->
+                        {% if followed %}
+                        <form action={% url "unfollow" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                            <input type="hidden" name="user_id" value={{user.id}}></input>
+                            <button type="submit" class="btn btn-primary rel-btn" id="follow-btn">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form action={% url "follow" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                            <input type="hidden" name="user_id" value={{user.id}}></input>
+                            <button type="submit" class="btn btn-primary rel-btn" id="follow-btn">Follow</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </ul>
+
+<!-- ****************************************************************(****** -->
+<!-- *************************** GRUMBS PAGE ************************(****** -->
+<!-- *********************************************************************** -->
+
+                <div id="page-grumbs" class="page {{grumbs_hidden.hidden}}">
+                    <ul class="grumbs-list list-group" id="grumbs-list">
+
+<!-- *************************** GRUMBS ************************************ -->
+                        {% for grumb in user_grumbs %}
+                            {% block grumb_list %}{% endblock %}
+                        {% endfor %}
+<!-- *************************** END GRUMBS ******************************** -->
+
+                    </ul>
+                </div>
+
+<!-- *********************************************************************** -->
+<!-- *************************** FOLLOWERS PAGE **************************** -->
+<!-- *********************************************************************** -->
+
+            {% if self_profile %}
+                <div id="page-followers" class="page {{followers_hidden.hidden}}">
+                    <ul class="grumbs-list list-group" id="followers-grumbs-list">
+
+<!-- *************************** GRUMBS ************************************ -->
+                        {% for grumb in follower_grumbs %}
+                            {% block follower_grumb_list %}{% endblock %}
+                        {% endfor %}
+<!-- *************************** END GRUMBS ******************************** -->
+
+                    </ul>
+                </div>
+            {% endif %}
+
+<!-- *********************************************************************** -->
+<!-- *************************** PROFILE PAGE ****************************** -->
+<!-- *********************************************************************** -->
+
+                <div id="page-profile" class="page {{profile_hidden.hidden}}">
+                    <div class="panel panel-default profile-subgroup">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 col-sm-11 col-xs-11">
+                                    <h3 class="panel-title mp-semibold profile-title">About Me</h3>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                    {% if self_profile %}
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-edit edit-profile-btn modal-btn"
+                                            id="edit_aboutme" data-toggle="modal" href="#edit_aboutme_modal"></button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body profile-content" id="aboutme-text">{{user.profile.about_me}}</div>
+                    </div>
+
+                    <div class="panel panel-default profile-subgroup">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 col-sm-11 col-xs-11">
+                                    <h3 class="panel-title mp-semibold profile-title">Contact Information</h3>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                    {% if self_profile %}
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-edit edit-profile-btn modal-btn"
+                                            id="edit_contacts" data-toggle="modal" href="#edit_contacts_modal"></button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body profile-content">
+                            <table class="table" id="contacts-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="profile-content-param">Phone</td>
+                                        <td class="contact-text" id="contact-phone">{{user.profile.contact_phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="profile-content-param">Email</td>
+                                        <td class="contact-text" id="contact-email">{{user.profile.contact_email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="profile-content-param">Address</td>
+                                        <td class="contact-text" id="contact-address">{{user.profile.contact_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="profile-content-param">Website</td>
+                                        <td class="contact-text" id="contact-website">{{user.profile.contact_website}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="profile-content-param">Facebook</td>
+                                        <td class="contact-text" id="contact-facebook">{{user.profile.contact_facebook}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default profile-subgroup">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 col-sm-11 col-xs-11">
+                                    <h3 class="panel-title mp-semibold profile-title">Personal Links</h3>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-xs-1">
+                                    {% if self_profile %}
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-edit edit-profile-btn modal-btn"
+                                            id="edit_links" data-toggle="modal" href="#edit_links_modal"></button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body profile-content" id="links-text">
+                            {% for link in user.profile.links.all %}
+                                <div><a href={{link.url}}>{{link.url}}</a></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- FOLLOWING -->
+                    <div class="panel panel-default profile-subgroup">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 col-sm-11 col-xs-11">
+                                    <h3 class="panel-title mp-semibold profile-title">Following</</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-body profile-content" id="following-panel">
+                            <ul class="list-group" id="following-list">
+                                {% for follower in user.profile.followed_user.all %}
+                                <li class="list-group-item follower">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            {% if follower.profile.profile_pic %}
+                                                <img src= {% static follower.profile.profile_pic.url %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+                                            {% else %}
+                                                <img src= {% static "images/empty_profile_sq5.jpg" %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-10 col-sm-10 col-xs-10">
+                                            <div class="follower-name mp-semibold">
+                                                <a href={% url "profile" follower.username %}>{{follower.first_name}}</a><span class="follower-username mp">@{{follower.username}}</span>
+                                            </div>
+                                            <!-- TEXT -->
+                                            <div class="follower-text mp">{{follower.profile.about_me}}</div>
+                                            <!-- END TEXT -->
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- END FOLLOWING -->
+
+                    <!-- FOLLOWER -->
+                    <div class="panel panel-default profile-subgroup">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 col-sm-11 col-xs-11">
+                                    <h3 class="panel-title mp-semibold profile-title">Followers</</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-body profile-content" id="followers-panel">
+                            <ul class="list-group" id="followers-list">
+                                {% for follower_profile in user.followed_user_set.all %}
+                                <li class="list-group-item follower">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            {% if follower_profile.profile_pic %}
+                                                <img src= {% static follower_profile.profile_pic.url %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+                                            {% else %}
+                                                <img src= {% static "images/empty_profile_sq5.jpg" %} alt="NOT LOADED" class="img-rounded profile-pic-comment">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-10 col-sm-10 col-xs-10">
+                                            <div class="follower-name mp-semibold">
+                                                <a href={% url "profile" follower_profile.user.username %}>{{follower_profile.user.first_name}}</a><span class="follower-username mp">@{{follower_profile.user.username}}</span>
+                                            </div>
+                                            <!-- TEXT -->
+                                            <div class="follower-text mp">{{follower_profile.about_me}}</div>
+                                            <!-- END TEXT -->
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- END FOLLOWER -->
+
+                </div>
+
+<!-- ********************************************************************** -->
+<!-- *************************** IMAGES PAGE ****************************** -->
+<!-- ********************************************************************** -->
+
+                <div id="page-images" class="page {{images_hidden.hidden}}">
+                    <div class="row profile-images">
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/vader_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/yoda_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/luke_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/ewok_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/voldemort_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/scotty_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src= {% static "images/obiwan_profile_sq.jpg" %} alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+<!-- ********************************************************************** -->
+<!-- *************************** SEARCH PAGE ****************************** -->
+<!-- ********************************************************************** -->
+
+                <div id="page-search" class="page {{search_hidden.hidden}}">
+
+                    <form id="search-form" class="well well-lg" action={% url "search_grumb" %} method="get" accept-charset="UTF-8">{% csrf_token %}
+                        <div class="col-md-9 col-sm-9 col-xs-9">
+                            <input type="text" id="search-text" name="text" class="form-control" placeholder="Please enter your search term" autofocus></input>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <button id="search-btn" class="btn btn-sm btn-primary btn-block" type="submit">Search</button>
+                        </div>
+                    </form>
+
+                    <ul class="grumbs-list list-group" id="search-grumbs-list">
+
+                        {% if search_res %}
+<!-- *************************** GRUMBS ************************************ -->
+                        {% for grumb in search_res %}
+                            {% block search_grumb_list %}{% endblock %}
+                        {% endfor %}
+<!-- *************************** END GRUMBS ******************************** -->
+                        {% endif %}
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+<!-- *************************************************************  -->
+<!--                          MODALS                                -->
+<!-- *************************************************************  -->
+
+    <div class="modal" id="new_grumb_modal">
+        <div class="modal-dialog">
+            <div class="modal-content" id="new_grumb_modal_window">
+                <form action={% url "post_grumb" %} method="post" accept-charset="UTF-8" enctype="multipart/form-data">{% csrf_token %}
+                    <input type="hidden" id="grumb_image_url" name="image_url"></input>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mp-semibold">Grumblr away!</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <textarea class="form-control" rows="5" name="text" id="grumb_input_text"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="image-upload-button" class="btn btn-primary glyphicon glyphicon-camera float-left">
+                            <input type="file" class="image-upload-input" name="image"/>
+                        </button>
+
+                        <span class="mp" id="grumb_chars_left">WRONG</span>
+                        <button type="submit" class="btn btn-primary mp-bold" id="add-grumb">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if self_profile %}
+    <div class="modal" id="edit_aboutme_modal">
+        <div class="modal-dialog">
+            <div class="modal-content profile-modal" id="edit_aboutme_modal_window">
+                <form action={% url "update_profile" "about_me" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mp-semibold">About Me</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <textarea class="form-control" id="edit-aboutme-text" rows="5" name="text"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary mp-bold" id="update-aboutme">Update</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="edit_contacts_modal">
+        <div class="modal-dialog">
+            <div class="modal-content profile-modal" id="edit_contacts_modal_window">
+                <form action={% url "update_profile" "contacts" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mp-semibold">Contact Information</h4>
+                    </div>
+
+                    <div class="modal-body" id="edit-profile-modal-body">
+                        <table class="table" id="edit-contacts-table">
+                            <tbody>
+                                {% for field in contact_form %}
+                                <tr>
+                                    <td class="edit-profile-content-param">{{field.label}}</td>
+                                    <td>{{field}}</input></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary mp-bold" id="update-contacts" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="edit_links_modal">
+        <div class="modal-dialog">
+            <div class="modal-content profile-modal" id="edit_links_modal_window">
+                <form action={% url "update_profile" "links" %} method="post" accept-charset="UTF-8">{% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mp-semibold">Personal Links</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <textarea class="form-control" rows="5" id="edit-links-text" name="text"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary mp-bold" id="update-links" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="edit_profile_pic_modal">
+        <div class="modal-dialog">
+            <div class="modal-content profile-modal" id="edit_profile_pic_modal_window">
+                <form action={% url "update_profile" "image" %} method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mp-semibold">Profile Picture</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="file" name="image">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary mp-bold" id="update-profile_pic" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="modal" id="change_password_modal">
+        <div class="modal-dialog">
+            <div class="modal-content password-modal" id="change_password_modal_window">
+                <form action={% url "change_password" %} method="post">{% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title mp-semibold">Change Password</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="password" name="old_password" class="form-control pw_change_input" placeholder="Please enter your old password">
+                        <input type="password" name="new_password" class="form-control pw_change_input" placeholder="Enter your new password">
+                        <input type="password" name="new_password2" class="form-control" placeholder="Enter your new password again">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary mp-bold" id="update-profile_pic" type="submit">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src= {% static "scripts/jquery-1.8.2.min.js" %}></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src= {% static "scripts/bootstrap.min.js" %}></script>
+    <script src= {% static "scripts/monitor-class.js" %}></script>
+    <script src= {% static "scripts/profile.js" %}></script>
+  </body>
+</html>

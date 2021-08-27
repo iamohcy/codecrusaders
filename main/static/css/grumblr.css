@@ -1,0 +1,79 @@
+
+/* Make scrollbar always appear*/
+/*html {overflow-y: scroll;}*/
+
+/*NAVBAR*/
+
+body {
+    font-family: myriad-pro;
+    font-size: 16px;
+}
+
+/*FONTS*/
+
+@font-face {
+    font-family: beyond_sky_font;
+    src: local(beyond_sky_font), url('fonts/beyondsky.ttf') format('opentype');
+}
+
+@font-face {
+    font-family: myriad-pro;
+    src: local(beyond_sky_font), url('fonts/MYRIADPRO-REGULAR.OTF') format('opentype');
+}
+
+@font-face {
+    font-family: myriad-pro-bold;
+    src: local(beyond_sky_font), url('fonts/MYRIADPRO-BOLD.OTF') format('opentype');
+}
+
+@font-face {
+    font-family: myriad-pro-semibold;
+    src: local(beyond_sky_font), url('fonts/MYRIADPRO-SEMIBOLD.OTF') format('opentype');
+}
+
+@font-face {
+    font-family: myriad-pro-cond;
+    src: local(beyond_sky_font), url('fonts/MYRIADPRO-COND.OTF') format('opentype');
+}
+
+/* TEXT */
+
+.mp {
+    font-family: myriad-pro-regular;
+}
+
+.mp-semibold {
+
+    font-family: myriad-pro-semibold;
+}
+
+.mp-bold {
+    font-family: myriad-pro-bold;
+}
+
+/* GENERAL */
+.hidden {
+    display: none;
+}
+
+.error_msg {
+    font-size: 14px;
+    color: #EE0000;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
